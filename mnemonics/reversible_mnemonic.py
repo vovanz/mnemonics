@@ -1,11 +1,11 @@
 import re
 from uuid import UUID
 
-from mnemonics.abstract.joinable import Joinable
+from mnemonics.abstract.iterable_to_string import IterableToString
 from mnemonics.wordlist import default_wordlist
 
 
-class ReversibleMnemonic(Joinable):
+class ReversibleMnemonic(IterableToString):
     wordlist = default_wordlist
     wordlist_length = len(wordlist)
     wordlist_indexes = {

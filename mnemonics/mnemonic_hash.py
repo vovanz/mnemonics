@@ -1,10 +1,10 @@
 from random import Random
 
-from mnemonics.abstract.joinable import Joinable
+from mnemonics.abstract.iterable_to_string import IterableToString
 from mnemonics.wordlist import default_wordlist
 
 
-class MnemonicHash(Joinable):
+class MnemonicHash(IterableToString):
     wordlist = default_wordlist
 
     def __init__(self, seed, length=4):
