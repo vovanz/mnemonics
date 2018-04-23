@@ -1,4 +1,5 @@
 import re
+from math import inf
 from uuid import UUID
 
 from ._iterable_to_string import IterableToString
@@ -9,6 +10,9 @@ class AbstractReversibleMnemonic(IterableToString):
 
     _wordlist_length = None
     _wordlist_indexes = None
+
+    _min_word_length = None
+    _max_word_length = None
 
     @property
     def wordlist_length(self):
@@ -24,14 +28,42 @@ class AbstractReversibleMnemonic(IterableToString):
             }
         return self.__class__._wordlist_indexes
 
-    @classmethod
-    def _parse_mnemonic_string_iter(cls, mnemonic_string):
+    @property
+    def min_word_length(self):
+        if self.__class__._min_word_length is None:
+            self._calculate_word_length()
+        return self.__class__._min_word_length
+
+    @property
+    def max_word_length(self):
+        if self.__class__._max_word_length is None:
+            self._calculate_word_length()
+        return self.__class__._max_word_length
+
+    def _calculate_word_length(self):
+        min_word_length = inf
+        max_word_length = 0
+
+        for word in self.wordlist:
+            if len(word) < min_word_length:
+                min_word_length = len(word)
+            if len(word) > max_word_length:
+                max_word_length = len(word)
+
+        self.__class__._min_word_length = min_word_length
+        self.__class__._max_word_length = max_word_length
+
+    def _parse_mnemonic_string_iter(self, mnemonic_string):
         mnemonic_string = re.sub('[^a-z]', '', mnemonic_string.lower())
 
         i = 0
         for j in range(len(mnemonic_string)):
+            if j - i < self.min_word_length:
+                continue
+            if j - i > self.max_word_length:
+                raise Exception()
             prefix = mnemonic_string[i:j]
-            if prefix in cls.wordlist_indexes:
+            if prefix in self.wordlist_indexes:
                 yield prefix
                 i = j
         yield mnemonic_string[i:]
