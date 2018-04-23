@@ -19,7 +19,7 @@ def _cached_property(method):
 class Joinable(Iterable):
     @abstractmethod
     def __iter__(self):
-        pass
+        return NotImplemented
 
     def join(self, delimiter=''):
         return delimiter.join(self)
