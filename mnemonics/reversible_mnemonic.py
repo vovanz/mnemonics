@@ -10,7 +10,6 @@ class ReversibleMnemonic(Joinable):
     wordlist_indexes = {
         word.lower(): index for index, word in enumerate(wordlist)
     }
-    wordlist_set = set(wordlist)
 
     @classmethod
     def _parse_mnemonic_string_iter(cls, mnemonic_string):
