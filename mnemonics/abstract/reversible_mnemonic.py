@@ -6,7 +6,7 @@ from ._iterable_to_string import IterableToString
 
 
 class AbstractReversibleMnemonic(IterableToString):
-    wordlist = None
+    wordlist = None  #: type [str]
 
     _wordlist_length = None
     _wordlist_indexes = None
@@ -16,6 +16,10 @@ class AbstractReversibleMnemonic(IterableToString):
 
     @property
     def wordlist_length(self):
+        """
+
+        :rtype: int
+        """
         if self.__class__._wordlist_length is None:
             self.__class__._wordlist_length = len(self.__class__.wordlist)
         return self.__class__._wordlist_length
@@ -30,12 +34,20 @@ class AbstractReversibleMnemonic(IterableToString):
 
     @property
     def min_word_length(self):
+        """
+
+        :rtype: int
+        """
         if self.__class__._min_word_length is None:
             self._calculate_word_length()
         return self.__class__._min_word_length
 
     @property
     def max_word_length(self):
+        """
+
+        :rtype: int
+        """
         if self.__class__._max_word_length is None:
             self._calculate_word_length()
         return self.__class__._max_word_length
